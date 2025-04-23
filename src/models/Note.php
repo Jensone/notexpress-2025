@@ -2,21 +2,41 @@
 
 namespace models;
 
-use models\Model;
+use models\AbstractModel;
 
-class Note extends Model
+class Note extends AbstractModel
 {
-    private int $id;
     private string $title;
+    private string $slug;
     private string $content;
-    private int $user_id;
+    private string $image;
+
+    protected string $table = 'notes'; // Défini la table où chercher les données
+    protected string $fields = 'title, slug, content, image'; // Renseigne les champs de la table
+    protected string $values = ':title, :slug, :content, :image'; // Indique les valeurs pour SQL
+    /**
+     * Défini les valeurs à binder (:title, :slug, :content, :image)
+     * Bind: Attache une valeur à une variable pour la requête SQL
+     */
+    protected array $valuesBinded = [
+        ':title' => '',
+        ':slug' => '',
+        ':content' => '', 
+        ':image' => ''
+    ];
 
     /**
-     * Get the value of id
-     */ 
-    public function getId()
+     * Method bindValues()
+     * To bind values to the query
+     * @param void
+     * @return void
+     */
+    public function bindValues(): void
     {
-        return $this->id;
+        $this->valuesBinded[':title'] = $this->title;
+        $this->valuesBinded[':slug'] = $this->slug;
+        $this->valuesBinded[':content'] = $this->content;
+        $this->valuesBinded[':image'] = $this->image;
     }
 
     /**
@@ -60,21 +80,41 @@ class Note extends Model
     }
 
     /**
-     * Get the value of user_id
+     * Get the value of slug
      */ 
-    public function getUserId()
+    public function getSlug()
     {
-        return $this->user_id;
+        return $this->slug;
     }
 
     /**
-     * Set the value of user_id
+     * Set the value of slug
      *
      * @return  self
      */ 
-    public function setUserId($user_id)
+    public function setSlug($slug)
     {
-        $this->user_id = $user_id;
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of image
+     */ 
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * Set the value of image
+     *
+     * @return  self
+     */ 
+    public function setImage($image)
+    {
+        $this->image = $image;
 
         return $this;
     }
