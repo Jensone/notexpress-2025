@@ -58,11 +58,11 @@ class Router
     {
         if ($slug) {
             $note = new Note();
-            $note->find($slug);
+            $note->find($slug); // Travail du modèle
             if ($request == '/note?slug=' . $slug) {
                 $pageTitle = $note->getTitle();
                 $pageDescription = substr($note->getContent(), 0, 100) . '...';
-                require __DIR__ . '/../../views/notes/show.php';
+                require __DIR__ . '/../../views/notes/show.php'; // Travail de la vue
                 return;
             } elseif ($request == '/note/edit?slug=' . $slug) {
                 $pageTitle = "Modification d'une note";
@@ -76,7 +76,7 @@ class Router
             case '/':
                 $pageTitle = "Accueil";
                 $pageDescription = "NoteXpress est une application de prise de notes en ligne.";
-                $notes = (new Note())->findAll();
+                $notes = array_slice((new Note())->findAll('DESC'), 0, 4);
                 require __DIR__ . '/../../views/home.php';
                 break;
             case '/notes':
