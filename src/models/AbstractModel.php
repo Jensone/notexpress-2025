@@ -29,7 +29,7 @@ abstract class AbstractModel
     {
         if ($order) {
             $query = $this->pdo->query(
-                "SELECT * FROM {$this->table} ORDER BY {$order}"
+                "SELECT * FROM {$this->table} ORDER BY created_at {$order}"
             );
             return $query->fetchAll();
         } else {
@@ -65,7 +65,7 @@ abstract class AbstractModel
     public function hydrate(array $data): void
     {
         foreach ($data as $key => $value) {
-            $method = 'set' . ucfirst($key);
+            $method = 'set' . ucfirst($key); // rendu en setQuelqueChose
             if (method_exists($this, $method)) {
                 $this->$method($value);
             }
