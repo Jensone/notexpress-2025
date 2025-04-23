@@ -15,7 +15,7 @@
 </head>
 
 <body>
-    <div class="position-sticky top-0 bg-white">
+    <div class="position-sticky top-0 z-3 bg-white">
         <header class="p-3 mb-4 border-bottom d-flex justify-content-between align-items-center">
             <a href="/" class="">
                 <img src="/assets/images/nx-line-color.svg" alt="logo" width="150">
