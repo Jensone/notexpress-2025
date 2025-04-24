@@ -1,6 +1,4 @@
 <?php 
 $pageTitle = 'Edit note';
 
-?>
-
-<h1><?= $pageTitle ?></h1>
+include __DIR__ . '/../components/note-form.php';
