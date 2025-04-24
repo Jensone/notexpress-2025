@@ -19,9 +19,6 @@ class NoteController extends AbstractController
 
         $nouvelleNote->bindValues(); // Liaison des variables avec les propriétés de la classe Note
         $nouvelleNote->create(); // Enregistrement de la nouvelle note dans la base de données
-
-        var_dump($nouvelleNote); // Affiche les informations de la nouvelle note
-        die();
     }
 
     static public function edit($slug)
