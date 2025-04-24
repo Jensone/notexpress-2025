@@ -19,27 +19,52 @@ class Router
      */
     static public function route($request): void
     {
+        // On vérifie si la requête est une redirection
+        self::handleRedirects($request);
         include_once __DIR__ . '/../../views/components/header.php';
-        // Routes
+        self::handleViews($request);
+        include_once __DIR__ . '/../../views/components/footer.php';
+        die();
+    }
+
+    static public function handleRedirects($request): void
+    {
+        switch ($_SERVER['REQUEST_METHOD']) {
+            case 'GET':
+                // Si le tableau GET contient "slug" et que la requête est "/note/delete?slug=" + slug
+                if (isset($_GET['slug']) && $request == '/note/delete?slug=' . $_GET['slug']) {
+                    /**
+                     * Appel de la méthode delete() de la classe NoteController
+                     * Seul NoteController est habilité à agir sur les notes
+                     */
+                    $note = new Note();
+                    $note->find($_GET['slug']);
+                    NoteController::delete($note->getSlug());
+                }
+                break;
+            case 'POST':
+                if (isset($_POST['slug']) && $request == '/note/edit?slug=' . $_POST['slug']) { // Cas où un modification de la note est faite
+                    NoteController::edit($_POST['slug']); // On appelle la méthode edit(avec le slug) de NoteController
+                } 
+                
+                if ($request == '/note/add' || $request == '/note/add/') {
+                    NoteController::add(); // On appelle la méthode add() de NoteController
+                }
+                break;
+        }
+    }
+
+    static public function handleViews($request): void
+    {
         switch ($_SERVER['REQUEST_METHOD']) {
             case 'GET':
                 if (isset($_GET['slug'])) {
-                    $slug = $_GET['slug'];
-                    self::handleGetRequest($request, $slug); // "::" opérateur de portée 
-                    break;
+                    self::handleGetRequest($request, $_GET['slug']);
                 } else {
                     self::handleGetRequest($request);
-                    break;
                 }
-            case 'POST':
-                if (isset($_POST['slug'])) {
-                    $slug = $_POST['slug'];
-                    self::handlePostRequest($request, $slug);
-                    break;
-                } else {
-                    self::handlePostRequest($request);
-                    break;
-                }
+                break;
+
             default:
                 http_response_code(405);
                 $pageTitle = "Demande non autorisée";
@@ -47,7 +72,6 @@ class Router
                 require __DIR__ . '/../../views/405.php';
                 break;
         }
-        include_once __DIR__ . '/../../views/components/footer.php';
     }
 
     /**
@@ -69,12 +93,6 @@ class Router
                 $pageDescription = "Modifiez une note sur NoteXpress.";
                 require __DIR__ . '/../../views/notes/edit.php';
                 return;
-            } elseif ($request == '/note/delete?slug=' . $slug) {
-                /**
-                 * Appel de la méthode delete() de la classe NoteController
-                 * Seul NoteController est habilité à agir sur les notes
-                 */ 
-                NoteController::delete($note->getSlug());
             }
         }
         switch ($request) {
@@ -104,29 +122,6 @@ class Router
                 $pageDescription = "La page demandée n'existe pas.";
                 require __DIR__ . '/../../views/404.php';
                 break;
-        }
-    }
-
-    /**
-     * Method handlePostRequest()
-     * To handle POST requests and treat the data sent by the user
-     */
-    static public function handlePostRequest($request, ?string $slug = null)
-    {
-        if ($slug) {
-            if ($request == '/note/edit?slug=' . $slug) {
-                NoteController::edit($slug);
-            }
-        } elseif ($request == '/note/add' || $request == '/note/add/') {
-            // add() is a static method of the NoteController class
-            NoteController::add();
-            return;
-        } else {
-            http_response_code(404);
-            $pageTitle = "Page introuvable";
-            $pageDescription = "La page demandée n'existe pas.";
-            require __DIR__ . '/../../views/404.php';
-            return;
         }
     }
 }
