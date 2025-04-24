@@ -24,7 +24,7 @@ class NoteController extends AbstractController
 
         $currentNote->bindValues();
         $currentNote->update($slug);
-        header('Location: /note?slug=' . $slug);
+        // header('Location: /note?slug=' . $slug);
     }
 }
 // Don't write any code below this line
