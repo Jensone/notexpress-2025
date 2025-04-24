@@ -14,3 +14,7 @@
 <a href="/note/edit?slug=<?= $slug ?>" class="btn btn-warning">
     Modifier la note
 </a>
+
+<a href="/note/delete?slug=<?= $slug ?>" class="btn btn-outline-danger">
+    Supprimer la note
+</a>
