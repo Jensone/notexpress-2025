@@ -69,6 +69,12 @@ class Router
                 $pageDescription = "Modifiez une note sur NoteXpress.";
                 require __DIR__ . '/../../views/notes/edit.php';
                 return;
+            } elseif ($request == '/note/delete?slug=' . $slug) {
+                /**
+                 * Appel de la méthode delete() de la classe NoteController
+                 * Seul NoteController est habilité à agir sur les notes
+                 */ 
+                NoteController::delete($note->getSlug());
             }
         }
         switch ($request) {
