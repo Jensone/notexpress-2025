@@ -114,20 +114,12 @@ abstract class AbstractModel
      * @param ?string $relation
      * @return void
      */
-    public function delete(string $slug, ?string $relation): void
+    public function delete(string $slug): void
     {
-        if ($relation) {
-            $relationLower = strtolower($relation);
-            $query = $this->pdo->prepare(
-                "DELETE FROM {$this->table} WHERE {$relationLower} = {$slug}"
-            );
-            $query->execute();
-        } else {
-            $query = $this->pdo->prepare(
-                "DELETE FROM {$this->table} WHERE id = {$slug}"
-            );
-            $query->execute();
-        }
+        $query = $this->pdo->prepare(
+            "DELETE FROM {$this->table} WHERE slug = :slug"
+        );
+        $query->execute(['slug' => $slug]);
     }
 }
 // Don't write any code below this line
