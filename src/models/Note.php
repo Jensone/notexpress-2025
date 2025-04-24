@@ -4,6 +4,11 @@ namespace models;
 
 use models\AbstractModel;
 
+/**
+ * Représentation de ce qu'est une note dans l'application NoteXpress
+ * Ainsi que dans la base de données
+ * Catégorie de la classe : MODEL
+ */
 class Note extends AbstractModel
 {
     private string $title;

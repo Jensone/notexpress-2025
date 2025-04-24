@@ -6,6 +6,11 @@ use controllers\AbstractController;
 
 use models\Note;
 
+/**
+ * Représentation dees capacité applicable sur une note dans l'application NoteXpress
+ * Aucunes interactions directes avec la base de données
+ * Catégorie de la classe : CONTROLLER
+ */
 class NoteController extends AbstractController
 {
     static public function add()
